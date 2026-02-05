@@ -288,3 +288,100 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/assets/js/boot.min.js"></script>
 <script src="/assets/js/owl.carousel.min.js"></script>
 <script src="/assets/js/style.min.js"></script>
+<style>    
+    .npoQ3jcV {
+    position: fixed;
+    right: 20px;
+    bottom: 40px;
+    width: 50px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, .24) 0 3px 8px;
+    z-index: 1024;
+
+
+    /* Popup hidden state */
+    opacity: 0;
+    transform: translateY(60px) scale(0.8);
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* Popup visible */
+.npoQ3jcV.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+
+
+.zedJnkUQ {
+    width: 50px;
+    height: 50px;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.jEXW8Hdk {
+    color: #ffffff;
+    font-size: 30px;
+}
+
+</style>
+<div class="npoQ3jcV" role="button" id="whatsapp">
+    <div class="zedJnkUQ">
+        <div class="jEXW8Hdk bi bi-whatsapp"></div>
+    </div>
+</div>
+
+<audio id="popupSound" preload="auto">
+    <source src="https://blackifier.kesug.com/assets/media/audio/multi-pop-1-188165.mp3" type="audio/mpeg">
+</audio>
+<script>
+    // jQuery script to open WhatsApp with a pre-defined message
+$(document).ready(function() {
+    $(document).on("click","#whatsapp",function() {
+        // Decrypt the number using atob
+        let encryptedNumber = "OTk0MjY0NzAzMw==";
+        let phoneNumber = atob(encryptedNumber);
+
+        // Construct the WhatsApp API URL with a predefined message
+        let whatsappUrl = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=Hello%20Blackifier";
+
+        // Open WhatsApp
+        window.open(whatsappUrl, "_blank");
+    });
+
+});
+
+function triggerPopup() {
+    setTimeout(function () {
+        // 1. Show the visual popup
+        $(".npoQ3jcV").addClass("show");
+
+        // 2. Play the sound exactly when the popup appears
+        var sound = document.getElementById("popupSound");
+        if (sound) {
+            // Since we "unlocked" this in the click event, it will work now
+            sound.play().catch(function (e) {
+                console.log("Playback blocked or failed:", e);
+            });
+        }
+    }, 2000); // 2 second delay
+}
+
+// Listen for the first interaction to "unlock" the audio engine
+$(document).one("scroll touchstart", function () {
+    // Essential: Play and immediately pause to tell the browser 
+    // that this audio element is now "allowed" to make noise.
+    var sound = document.getElementById("popupSound");
+    if (sound) {
+        sound.play().then(() => {
+            sound.pause();
+            sound.currentTime = 0;
+        }).catch(e => console.log("Unlock failed:", e));
+    }
+
+    triggerPopup();
+}); 
